@@ -10,7 +10,7 @@ setuptools.setup(
     version="0.2.1",
     author="Matthew Marshall",
     author_email="matthewmarshall124@gmail.com",
-    url="https://github.com/mmarshall124",
+    url="https://github.com/mmarshall124/powerball",
     license="MIT",
 
     # Description
