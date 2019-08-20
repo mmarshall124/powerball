@@ -7,7 +7,7 @@ with open("README.txt", "r") as fh:
 setuptools.setup(
     # Project information
     name="powerball",
-    version="0.2.1",
+    version="0.1.0",
     author="Matthew Marshall",
     author_email="matthewmarshall124@gmail.com",
     url="https://github.com/mmarshall124/powerball",
@@ -16,6 +16,7 @@ setuptools.setup(
     # Description
     description="A tool for competitive lottery analysis of bacterial groups.",
     long_description=long,
+    long_description_content_type="text/plain",
     # Packages
     packages=setuptools.find_packages(),
     # Classifiers
