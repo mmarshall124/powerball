@@ -25,17 +25,10 @@ def main():
     if args.verbose:
         print("Generating group submatrices.")
     # Array of the species within a group across samples for each group. 3D
-    groupSubmatrices = group_submatrices(inputMatrix.data, inputMatrix.groups,
-                                         inputMatrix.uniqueGroups)
-    # Checking that each group is an acceptable size.
-    for group in groupSubmatrices:
-        if group.shape[0] < args.groupSize:
-            # For now the program exits when there are groups
-            # lower than the minimum size.
-            # Eventually this should be turned into a warning message
-            # when the program can filter out smaller groups.
-            sys.exit("Program exited. Group size lower than minimum (" +
-                     str(args.groupSize) + ")")
+    # Also returns a filtered list of unique groups that are above the min size
+    # TODO Rename inputMatrix.uniqueGroups to something more representative of what it's now used for.
+    groupSubmatrices, inputMatrix.uniqueGroups = group_submatrices(inputMatrix.data, inputMatrix.groups,
+                                         args.groupSize)
 
     if args.verbose:
         print("Generating null distributions.")
