@@ -8,7 +8,7 @@ from src.groups import group_submatrices
 from src.null import null_dists_comp, null_dists_lottery
 from src.csv_IO import csv_reader, csv_writer
 from src.dataMatrix import OutputMatrix
-from src.statFunctions import p_values, standard_effect
+from src.statFunctions import p_values, standard_effect, raw_effect
 from src.graphics import bokeh_xy, bokeh_xy_cmap, bokeh_xy_sliders
 
 
@@ -91,15 +91,22 @@ def output(inputMatrix, nullDistsComp, nullDistsLot, compDiversities,
     # Storing and printing all output data
     for i in range(len(inputMatrix.uniqueGroups)):
 
-        # Multiplied by -1 to give more user-friendly, positive values
-        compScores[i] = standard_effect(nullDistsComp[i],
-                                        compDiversities[i]) * -1
+        # By default uses raw effect size, configurable with arguments.
+        # Multiplied by -1 to give more user-friendly, positive values.
+        if args.standardEffect:
+            compScores[i] = standard_effect(nullDistsComp[i],
+                                            compDiversities[i]) * -1
+        else:
+            compScores[i] = raw_effect(nullDistsComp[i],
+                                            compDiversities[i]) * -1
 
         compPValues[i] = p_values(nullDistsComp[i], compDiversities[i],
                                   args.twoTailed, args.alpha)
 
-        # Multiplied by -1 to give more user-friendly, positive values
-        lotScores[i] = standard_effect(nullDistsLot[i], lotDiversities[i]) * -1
+        if args.standardEffect:
+            lotScores[i] = standard_effect(nullDistsLot[i], lotDiversities[i]) * -1
+        else:
+            lotScores[i] = raw_effect(nullDistsLot[i], lotDiversities[i]) * -1
 
         # Lottery P-Value is always one-tailed
         lotPValues[i] = p_values(nullDistsLot[i], lotDiversities[i], False,
@@ -163,6 +170,10 @@ def arg_parser():
                         help=("Determines the alpha for measuring P-values"
                               "(Default = 0.05)"),
                         type=float, default=0.05)
+    parser.add_argument("-se", "--standardEffect",
+                        help=("Uses standard effect size for computing competitiveness"
+                        " and lottery scores instead of the difference."),
+                        action="store_true")
     parser.add_argument("-cs", "--chartStyle",
                         help=("Determines the type of chart to display (1-3)"
                               "1. Scatterplot where significance of both "

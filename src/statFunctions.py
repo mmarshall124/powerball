@@ -62,3 +62,9 @@ def standard_effect(null, shDiv):  # Competitiveness score
     # Returns the standard effect size for a group based off the formula below:
     # https://en.wikipedia.org/wiki/Effect_size#Difference_family:_Effect_sizes_based_on_differences_between_means
     return ((numpy.mean(shDiv) - numpy.mean(null))/numpy.std(null))
+
+def raw_effect(null, shDiv):
+    # Takes a 2d array of null values and a list of the empirical shannon
+    # diversities for a group.
+    # Returns the raw effect size for a group i.e. the difference between the two.
+    return (numpy.mean(shDiv) - numpy.mean(null))
