@@ -4,7 +4,7 @@ import numpy as np
 import sys
 
 from src.diversity import shannon_diversity, lottery_shannon
-from src.groups import group_submatrices
+from src.groups import group_submatrices, filter_groups
 from src.null import null_dists_comp, null_dists_lottery
 from src.csv_IO import csv_reader, csv_writer
 from src.dataMatrix import OutputMatrix
@@ -24,12 +24,13 @@ def main():
 
     if args.verbose:
         print("Generating group submatrices.")
-    # Array of the species within a group across samples for each group. 3D
-    # Also returns a filtered list of unique groups that are above the min size
     # TODO Rename inputMatrix.uniqueGroups to something more representative of what it's now used for.
-    groupSubmatrices, inputMatrix.uniqueGroups = group_submatrices(inputMatrix.data, inputMatrix.groups,
-                                         args.groupSize)
+    # Returns a filtered list of unique groups that are above the min size
+    inputMatrix.uniqueGroups = filter_groups(inputMatrix.groups, args.groupSize)
 
+    # Array of the species within a group across samples for each group. 3D
+    groupSubmatrices = group_submatrices(inputMatrix.data, inputMatrix.groups,
+                                         inputMatrix.uniqueGroups)
     if args.verbose:
         print("Generating null distributions.")
     # Array of null distributions for each group. Used to calculate
