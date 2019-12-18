@@ -20,14 +20,13 @@ def p_values(null, shDiv, twoTailedFlag, alpha):
 
 def two_tailed_comparison(null, shDiv):  # Two-tailed p-value
     # Takes a 2d array of null values and a list of the empirical shannon
-    # diversities for a group. Returns the upper or lower one tailed p-value
-    # based on which is more significant.
+    # diversities for a group. Returns the two-tailed p-value.
     u = numpy.median(shDiv)
     mid = numpy.median(null)
     if u > mid:
-        p = one_tailed_upper(null, shDiv)
+        p = one_tailed_upper(null, u) + one_tailed_lower(null, (mid - (u - mid)))
     else:
-        p = one_tailed_lower(null, shDiv)
+        p = one_tailed_lower(null, u) + one_tailed_upper(null, (mid + (mid - u)))
 
     return p
 
@@ -35,9 +34,9 @@ def two_tailed_comparison(null, shDiv):  # Two-tailed p-value
 def one_tailed_lower(null, shDiv):  # One-tailed lower p-value
     # Takes a 2d array of null values and a list of the empirical shannon
     # diversities for a group. Returns the p-value given by the proportion
-    # of values greater than u in null.
+    # of values less than u in null.
     u = numpy.median(shDiv)
-    n_below = numpy.sum(numpy.greater(u, null))
+    n_below = numpy.sum(numpy.greater_equal(u, null))
     if n_below <= 0:
         return 1/null.size
     else:
@@ -47,9 +46,9 @@ def one_tailed_lower(null, shDiv):  # One-tailed lower p-value
 def one_tailed_upper(null, shDiv):  # One-tailed upper p-value
     # Takes a 2d array of null values and a list of the empirical shannon
     # diversities for a group. Returns the p-value given by the proportion
-    # of values less than u in null.
+    # of values greater than u in null.
     u = numpy.median(shDiv)
-    n_below = numpy.sum(numpy.less(u, null))
+    n_below = numpy.sum(numpy.less_equal(u, null))
     if n_below <= 0:
         return 1/null.size
     else:
