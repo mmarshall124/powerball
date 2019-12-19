@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     # Project information
     name="powerball",
-    version="0.2.3",
+    version="0.2.4",
     author="Matthew Marshall",
     author_email="matthewmarshall124@gmail.com",
     url="https://github.com/mmarshall124/powerball",

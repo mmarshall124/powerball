@@ -25,12 +25,16 @@ def test_group_submatrices():
                   [10, 15, 20, 45, 10], [5, 5, 5, 0, 85],
                   [15, 0, 15, 10, 0], [20, 0, 20, 15, 5]])
     groupArray = array(["C", "C", "C", "H", "H", "H"], dtype=str)
-    uniqueGroups = unique(groupArray)
 
     submatrices = array([[[20, 50, 10, 20, 0], [30, 30, 30, 10, 0],
                           [10, 15, 20, 45, 10]],
                          [[5, 5, 5, 0, 85], [15, 0, 15, 10, 0],
                           [20, 0, 20, 15, 5]]])
+    testUnique = ["C", "H"]
 
-    assert array_equal(groups.group_submatrices(data, groupArray,
-                                                uniqueGroups), submatrices), "Generated submatrices doesn't match expected values."
+    outputSubmatrices, outputUnique = groups.group_submatrices(data,
+                                                               groupArray,
+                                                               3)
+
+    assert array_equal(outputSubmatrices, submatrices), "Generated submatrices don't match expected values."
+    assert array_equal(outputUnique, testUnique), "Filtered Unique lists don't match"
